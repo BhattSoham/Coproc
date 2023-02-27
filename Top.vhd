@@ -33,10 +33,9 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity Top is
  Port (
-  
+  inst: in std_logic_vector(31 downto 0);
   cont: out std_logic_vector(31 downto 0);
-  addr : in std_logic_vector(11 downto 0);
-  rs1 : in std_logic_vector(4 downto 0);
+  addr : out std_logic_vector(11 downto 0);
   write_en: in std_logic;
   clock: in std_logic;
   x_in: out STD_LOGIC_VECTOR(31 downto 0);
@@ -77,6 +76,14 @@ Port (
         );
  end component;
 
+component Control is
+Port (
+inst: in std_logic_vector(31 downto 0);
+addr: out std_logic_vector(11 downto 0)
+
+ );
+end component;
+
  
 
 
@@ -85,14 +92,14 @@ signal  clk:  std_logic := '1';
 signal  rs :  std_logic_vector(4 downto 0);
 signal  regwr :  std_logic := '1';
 signal  flush :  std_logic;
-signal inst:  std_logic_vector(31 downto 0);
+--signal inst:  std_logic_vector(31 downto 0);
 
 begin
 
 uut1: Mem port map (
 
 cont => wdata,
-addr => addr,
+addr => inst(31 downto 20),
 write_en => write_en,
 clock => clock,
 x_in => x_in,
@@ -107,13 +114,17 @@ flush => flush
 
 uut2: reg port map (
  clk => clock,
- rs1 => rs1, 
+ rs1 => inst(19 downto 15), 
  regwr => regwr,
  wrdata => wdata
 );
 
+uut3: Control port map (
+inst => inst,
+addr => addr
 
-
+);
+addr <= inst(31 downto 20);
 cont <= wdata;
 
 
