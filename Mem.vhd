@@ -51,18 +51,32 @@ type mem_type is array (0 to 127 ) of std_logic_vector (31 downto 0);
  signal mem: mem_type;
  
 begin
-process(clock, flush) 
+process(clock, flush)
 begin
-
+---RKI 
  if rising_edge(clock) then 
   if write_en = '1' then
      mem(TO_INTEGER(unsigned(addr))) <= cont;
   end if;   
- end if;
+
  
-  end process;  
+
      
- 
+ ----RKU
+ if flush = '0' then --- FLUSH MODE
+
+  x_in <= mem(0);
+  y_in <= mem(4);
+  h <= mem(8);
+  c_in <= mem(12);
+  p_in <= mem(16);
+  p1_in <= mem(20);
+
+ end if;
 
 
+end if;
+
+
+  end process;  
 end Behavioral;
