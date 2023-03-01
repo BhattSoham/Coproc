@@ -68,35 +68,10 @@ if (func3(1) = '1') then
  end if;  
    
   case func3 is
-  when "000" => ---RKI
-   --init <= '1';
---    opcode <= inst(6 downto 0);
---   rd <= inst(11 downto 7);
---   imm <= inst(31 downto 20);
-   
-   
-   opcode <= "0001100";
-   rd <= "00000";
-   imm <= "000000000000";
- 
+  
   when "010" => ---RKU(Flush mode)
    
---   opcode <= inst(6 downto 0);
---   rd <= inst(11 downto 7);
---    if (imm = "000000000000" ) then 
---           addr1 <= imm;
---           -- addr1 <= imm;
---    else
---         addr1 <= std_logic_vector(unsigned(addr1) + 4);
---   end if;
-   
-   
-   
-   
-   
-   
-   opcode <= "0001100";
-   rd <= "00000";
+
     if (imm = "000000000000" ) then 
             addr1 <= imm;
     else
@@ -104,11 +79,6 @@ if (func3(1) = '1') then
    end if;
     
 
- 
-
-   
- 
- 
     
  when others =>
    opcode <= "0000000";
@@ -124,3 +94,41 @@ end process;
  --flush <= mflush; 
 
 end Behavioral;
+
+
+
+
+
+-- when "000" => ---RKI
+     
+   
+  
+  
+   --init <= '1';
+--    opcode <= inst(6 downto 0);
+--   rd <= inst(11 downto 7);
+--   imm <= inst(31 downto 20);
+   
+   
+--   opcode <= "0001100";
+--   rd <= "00000";
+--   imm <= "000000000000";
+
+
+---when "010" =>
+--   opcode <= inst(6 downto 0);
+--   rd <= inst(11 downto 7);
+--    if (imm = "000000000000" ) then 
+--           addr1 <= imm;
+--           -- addr1 <= imm;
+--    else
+--         addr1 <= std_logic_vector(unsigned(addr1) + 4);
+--   end if;
+   
+   
+   
+   
+   
+   
+--   opcode <= "0001100";
+--   rd <= "00000";
