@@ -37,7 +37,7 @@ entity Control is
 Port (
 inst: in std_logic_vector(31 downto 0);
 addr: out std_logic_vector(11 downto 0);
-flush: in std_logic
+flush: out std_logic
 --rs: in std_logic_vector(4 downto 0)
 
  );
@@ -51,7 +51,7 @@ signal  rd: std_logic_Vector(4 downto 0);
 signal func3: std_logic_Vector(2 downto 0);
 signal imm: std_logic_Vector(11 downto 0);
 signal addr1: std_logic_Vector(11 downto 0); 
---signal flush: std_logic;
+signal mflush: std_logic;
 
 begin
 
@@ -61,18 +61,40 @@ func3 <= inst(14 downto 12);
 rs1 <= inst(19 downto 15);
 imm <= inst(31 downto 20);
 
-process(func3, flush, imm)
+process(func3, imm)
 begin
-
+if (func3(1) = '1') then
+    flush <=  '0';
+ end if;  
+   
   case func3 is
   when "000" => ---RKI
    --init <= '1';
+--    opcode <= inst(6 downto 0);
+--   rd <= inst(11 downto 7);
+--   imm <= inst(31 downto 20);
+   
+   
    opcode <= "0001100";
    rd <= "00000";
    imm <= "000000000000";
  
   when "010" => ---RKU(Flush mode)
-   if flush = '0' then 
+   
+--   opcode <= inst(6 downto 0);
+--   rd <= inst(11 downto 7);
+--    if (imm = "000000000000" ) then 
+--           addr1 <= imm;
+--           -- addr1 <= imm;
+--    else
+--         addr1 <= std_logic_vector(unsigned(addr1) + 4);
+--   end if;
+   
+   
+   
+   
+   
+   
    opcode <= "0001100";
    rd <= "00000";
     if (imm = "000000000000" ) then 
@@ -81,11 +103,11 @@ begin
          addr1 <= std_logic_vector(unsigned(addr1) + 4);
    end if;
     
-    --addr <= imm + "000000000100" ;
+
  
 
    
-   end if;
+ 
  
     
  when others =>
@@ -97,8 +119,8 @@ begin
 end case;
 
 end process;
- 
+ --addr1 <= inst(31 downto 20);
  addr <= addr1;
- 
+ --flush <= mflush; 
 
 end Behavioral;
