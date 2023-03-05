@@ -34,9 +34,9 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity Top is
  Port (
   inst: in std_logic_vector(31 downto 0);
-  write_en: in std_logic;
+  --write_en: in std_logic;
   clock: in std_logic;
- flush : in std_logic;
+ -- flush : in std_logic;
  cont: out std_logic_vector(31 downto 0);
  addr: out std_logic_vector(11 downto 0);
   x_in: out STD_LOGIC_VECTOR(31 downto 0);
@@ -80,7 +80,9 @@ component Control is
 Port (
 inst: in std_logic_vector(31 downto 0);
 addr: out std_logic_vector(11 downto 0);
-flush: in std_logic
+flush: out std_logic;
+write_en: out std_logic
+
  );
 end component;
 
@@ -90,7 +92,9 @@ signal addr1: std_logic_vector(11 downto 0);
 signal wdata:  std_logic_vector(31 downto 0);
 signal  clk:  std_logic;
 signal  rs :  std_logic_vector(4 downto 0);
-signal  regwr :  std_logic := '1';
+signal flush : std_logic := '0';
+signal write_en: std_logic;
+--signal regwr : std_logic;
 --signal   x_in:  STD_LOGIC_VECTOR(31 downto 0);
 --signal  y_in :  STD_LOGIC_VECTOR(31 downto 0);
 --signal    h :  STD_LOGIC_VECTOR(31 downto 0);
@@ -124,17 +128,18 @@ flush => flush
 uut2: reg port map (
  clk => clock,
  rs1 => inst(19 downto 15), 
- regwr => regwr,
+ regwr => write_en,
  wrdata => wdata
 );
 
 uut3: Control port map (
 inst => inst,
 addr => addr1,
-flush => flush
+flush => flush,
+write_en => write_en
 );
 cont <= wdata;
---addr1 <= inst(31 downto 20);
+addr1 <= inst(31 downto 20);
 addr <= addr1;
 
 end Behavioral;
