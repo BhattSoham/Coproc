@@ -37,6 +37,7 @@ entity Control is
 Port (
 inst: in std_logic_vector(31 downto 0);
 addr: out std_logic_vector(11 downto 0);
+write_en: out std_logic;
 flush: out std_logic
 --rs: in std_logic_vector(4 downto 0)
 
@@ -63,37 +64,63 @@ imm <= inst(31 downto 20);
 
 process(func3, imm)
 begin
-if (func3(1) = '1') then
-    flush <=  '0';
- end if;  
-   
-  case func3 is
-  
-  when "010" => ---RKU(Flush mode)
-   
-
+ if (func3 = "000") then    ---    RKI
+   write_en <= '1';
+   flush <= '0';
     if (imm = "000000000000" ) then 
-            addr1 <= imm;
+     addr1 <= imm;
     else
          addr1 <= std_logic_vector(unsigned(addr1) + 4);
    end if;
-    
-
-    
- when others =>
-   opcode <= "0000000";
-   rd <= "00000";
-   rs1 <= "00000";
-   imm <= "000000000000"; 
+  
+   
+  elsif (func3 = "010") then ---   RKU (Flush Mode)
+   write_en <= '0';
+   flush <= '1';
+   
  
-end case;
-
-end process;
- --addr1 <= inst(31 downto 20);
- addr <= addr1;
+ 
+ 
+ 
+ 
+ 
+ end if;
+ end process;
+   addr <= addr1;
  --flush <= mflush; 
 
 end Behavioral;
+
+--end process;
+--if (func3(1) = '1') then
+--    flush <=  '0';
+--    else 
+--    flush <= '1';
+-- end if;  
+   
+--  case func3 is
+  
+--  when "010" => ---RKU(Flush mode)
+   
+
+--    if (imm = "000000000000" ) then 
+--            addr1 <= imm;
+--    else
+--         addr1 <= std_logic_vector(unsigned(addr1) + 4);
+--   end if;
+  
+
+ 
+-- when others =>
+--   opcode <= "0000000";
+--   rd <= "00000";
+--   rs1 <= "00000";
+--   imm <= "000000000000"; 
+ 
+--end case;
+
+ --addr1 <= inst(31 downto 20);
+
 
 
 
